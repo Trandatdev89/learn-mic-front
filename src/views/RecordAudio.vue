@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { BASE_URL } from '@/constant/BaseURL'
+import { BASE_URL, BASE_URL_LOCAL } from '@/constant/BaseURL'
 import axios from 'axios'
 import { ref } from 'vue'
 
@@ -30,12 +30,10 @@ const textTranscript = ref<string>('');
 const startRecording = async () => {
     if (!mediaRecorder.value || mediaRecorder.value.state === 'inactive') {
         const stream: MediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 128000 });
-
+        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 360000 });
 
         collectBitAudio(mediaRecorder.value);
         handleStopAction(mediaRecorder.value);
-
 
         mediaRecorder.value.start();
         isRecording.value = true;
@@ -60,9 +58,9 @@ const handleStopAction = (mediaRecorder: MediaRecorder) => {
         // Gui form-data xuong cho backend nua
 
         const formData = new FormData();
-        formData.append("file", blobData, "recording.webm");
+        formData.append("audioFile", blobData, "recording.webm");
 
-        const response = await axios.post(`${BASE_URL}/transcribe`, formData, {
+        const response = await axios.post(`${BASE_URL_LOCAL}/audio-to-text`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
