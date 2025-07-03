@@ -60,7 +60,7 @@ const handleStopAction = (mediaRecorder: MediaRecorder) => {
         const formData = new FormData();
         formData.append("audioFile", blobData, "recording.webm");
 
-        const response = await axios.post(`${BASE_URL}/audio-to-text`, formData, {
+        const response = await axios.post(`${BASE_URL_LOCAL}/audio-to-text`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
