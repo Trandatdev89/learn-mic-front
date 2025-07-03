@@ -30,7 +30,7 @@ const textTranscript = ref<string>('');
 const startRecording = async () => {
     if (!mediaRecorder.value || mediaRecorder.value.state === 'inactive') {
         const stream: MediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 360000 });
+        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 128000 });
 
         collectBitAudio(mediaRecorder.value);
         handleStopAction(mediaRecorder.value);
@@ -60,7 +60,7 @@ const handleStopAction = (mediaRecorder: MediaRecorder) => {
         const formData = new FormData();
         formData.append("audioFile", blobData, "recording.webm");
 
-        const response = await axios.post(`${BASE_URL_LOCAL}/audio-to-text`, formData, {
+        const response = await axios.post(`${BASE_URL}/audio-to-text`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
