@@ -28,15 +28,22 @@ const isRecording = ref<boolean>(false);
 const textTranscript = ref<string>('');
 
 const startRecording = async () => {
+
+    audioChunks.value = [];
+    audioUrl.value = '';
+    textTranscript.value = '';
+
     if (!mediaRecorder.value || mediaRecorder.value.state === 'inactive') {
         const stream: MediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 128000 });
+        mediaRecorder.value = new MediaRecorder(stream, { mimeType: "audio/webm", audioBitsPerSecond: 480000 });
 
         collectBitAudio(mediaRecorder.value);
         handleStopAction(mediaRecorder.value);
 
         mediaRecorder.value.start();
         isRecording.value = true;
+
+
     }
 }
 
