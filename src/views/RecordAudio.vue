@@ -27,6 +27,8 @@ const audioUrl = ref<string>('')
 const isRecording = ref<boolean>(false);
 const textTranscript = ref<string>('');
 
+console.log(MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))
+
 const startRecording = async () => {
 
     audioChunks.value = [];
@@ -67,7 +69,7 @@ const handleStopAction = (mediaRecorder: MediaRecorder) => {
         const formData = new FormData();
         formData.append("audioFile", blobData, "recording.webm");
 
-        const response = await axios.post(`${BASE_URL_LOCAL}/audio-to-text`, formData, {
+        const response = await axios.post(`${BASE_URL_LOCAL}/transcription`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
