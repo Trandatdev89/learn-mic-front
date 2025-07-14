@@ -12,11 +12,11 @@
             <audio :src="audioUrl" controls></audio>
         </div>
 
-        <p>Text Display: {{ textTranscript }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
+import type { Conversation } from '@/common/Conversation'
 import { BASE_URL, BASE_URL_LOCAL } from '@/constant/BaseURL'
 import axios from 'axios'
 import { ref } from 'vue'
@@ -25,15 +25,14 @@ const mediaRecorder = ref<MediaRecorder | null>(null)
 const audioChunks = ref<Blob[]>([])
 const audioUrl = ref<string>('')
 const isRecording = ref<boolean>(false);
-const textTranscript = ref<string>('');
+const textTranscript = ref<Conversation[]>([]);
 
-console.log(MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))
 
 const startRecording = async () => {
 
     audioChunks.value = [];
     audioUrl.value = '';
-    textTranscript.value = '';
+    textTranscript.value = [];
 
     if (!mediaRecorder.value || mediaRecorder.value.state === 'inactive') {
         const stream: MediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
